@@ -24,7 +24,29 @@ public class PassGen {
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest r = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/AddPoint?user=1"))
+                .uri(URI.create("https://nathcat.net:5050/AddPoint?user=1"))
+                .POST(HttpRequest.BodyPublishers.ofByteArray(baos.toByteArray()))
+                .build();
+
+        oos.close();
+        baos.close();
+
+        HttpResponse<String> response = client.send(r, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+    }
+
+    @Test
+    public void failTest() throws IOException, PublicKeyException, InterruptedException {
+        KeyPair p = Server.readKey(Server.PATH_KEY);
+        EncryptedObject o = p.encrypt(new String("Hello world"));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(o);
+        oos.flush();
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest r = HttpRequest.newBuilder()
+                .uri(URI.create("https://nathcat.net:5050/AddPoint?user=1"))
                 .POST(HttpRequest.BodyPublishers.ofByteArray(baos.toByteArray()))
                 .build();
 
