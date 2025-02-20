@@ -2,6 +2,9 @@
 **/build/
 !src/**/build/
 
+Assets
+out
+
 # Ignore Gradle GUI config
 gradle-app.setting
 
