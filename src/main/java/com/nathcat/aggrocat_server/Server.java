@@ -203,9 +203,15 @@ public class Server {
         return p;
     }
 
+    public static void CORSHeaders(HttpExchange t) {
+        t.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+    }
+
     private class GetCurrent implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+            CORSHeaders(exchange);
+
             JSONObject o = new JSONObject();
 
             for (Integer key : current.keySet()) {
@@ -220,6 +226,7 @@ public class Server {
     private class AddPoint implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+            CORSHeaders(exchange);
             HashMap<String, String> query = (HashMap<String, String>) queryToMap(exchange.getRequestURI().getQuery());
 
             String out;
